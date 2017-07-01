@@ -41,6 +41,40 @@
                     "title": "nRF: Hexfiles search locations",
                     "default": "**",
                     "type": "string"
+                },
+                "nrfjprog.deviceFamilyFilters": {
+                    "title": "nRF: Device family serial number filters.",
+                    "type": "object",
+    
+                    "patternProperties": {
+                        "^\\d+$": {
+                            "type":"string",
+                            "enum": [
+                                "NRF51",
+                                "NRF52"
+                            ],
+                            "id": "nrfjprog.deviceFamily"
+                        },
+                        ".*": {
+                            "description": "The serial number must only contain digits.",
+                            "enum": [
+                                "The serial number must only contain digits."
+                            ]
+                        }
+                    },
+                    "default": {
+                        "682": "NRF52"
+                    },
+                    "description": "Will use the value of the longest matching key from the start of the serial number as device family when calling nrfjprog."
+                },
+                "nrfjprog.deviceFamilyDefault": {
+                    "title": "nRF: Default device family, in case no family filters match.",
+                    "default": "NRF51",
+                    "enum": [
+                        "NRF51",
+                        "NRF52"
+                    ],
+                    "type": "string"
                 }
             }
         }

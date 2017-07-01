@@ -5,10 +5,15 @@ import * as subprocess from 'child_process';
 let deviceFilterOptions = { prompt: 'Apply a device filter', placeHolder: 'e.g. 680...'};
 
 function getDeviceFamily(serialNumber: string): string {
-    if (serialNumber.startsWith('682')) 
-        return 'NRF52';
-    else
-        return 'NRF51';
+    let config = vscode.workspace.getConfiguration('nrfjprog');
+    let filters = <{}> config.get('deviceFamilyFilters');
+    let fallback = config.get('deviceFamilyDefault') as string;
+    let filterSnrs = Object.keys(filters).sort();
+    for (var snr of filterSnrs) {
+        if (serialNumber.startsWith(snr)) 
+            return filters[snr];
+    }
+    return fallback;
 }
 
 function execute(cmd): Promise<string> {
