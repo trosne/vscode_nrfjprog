@@ -1,65 +1,68 @@
-# nrfjprog README
+# nRF5x Tools For VS Code
 
-This is the README for your extension "nrfjprog". After writing up a brief description, we recommend including the following sections.
+A VS Code wrapper of the Nordic Semiconductor utility with the same name.
+
+Program and erase the flash contents of Nordic Semiconductor nRF5x devices.
+
+This extension is not developed or supported by Nordic Semiconductor.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Program a device
 
-For example if there is an image subfolder under your extension project workspace:
+Command `nRF: Program device`
 
-\!\[feature X\]\(images/feature-x.png\)
+Select a device and a hexfile from the current project directory, and program it. Equivalent to calling `nrfjprog --program <hexfile> --sectorerase`.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Erase device flash contents
 
+Command `nRF: Erase device flash`
+
+Select a device and erase all flash contents. Equivalent to calling `nrfjprog --eraseall`.
+
+### Reset device 
+
+Command `nRF: Reset device`
+
+Select a device and reset it. Equivalent to calling `nrfjprog --reset`.
+
+### Program multiple devices
+
+Command `nRF: Program multiple devices`
+
+Select a device filter and a hexfile from the current project directory, and program it to all devices that match the filter.
+
+### Erase multiple devices
+
+Command `nRF: Erase multiple devices`
+
+Select a device filter and erase all flash contents of all devices that match the filter.
+
+### Reset multiple devices
+
+Command `nRF: Reset multiple devices`
+
+Select a device filter and reset all devices that match the filter.
+
+### Device filters
+
+The device filter matches against the start of the serial number, and acts on all devices that match. E.g. `680` will match devices `680191390` and `680123456`, but not `481234680`.
+ 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Requires nrfjprog from the nRF5x-Command-Line-Tools utility version 9.0.0 or higher. The extension looks for the program in its `PATH`, but the location can be overridden by setting the `nRF5xTools.nrfjprog` setting. The version and presence is checked at startup.
+
+The nRF5x-Command-Line-Tools utility is available for [Windows](http://www.nordicsemi.com/eng/nordic/Products/nRF52840/nRF5x-Command-Line-Tools-Win32/58850), [Linux](http://www.nordicsemi.com/eng/nordic/Products/nRF52840/nRF5x-Command-Line-Tools-Linux64/58852) and [OSx](http://www.nordicsemi.com/eng/nordic/Products/nRF52840/nRF5x-Command-Line-Tools-OSX/58855).
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- `nRF5xTools.hexFolderFilter`: Path filter for finding hexfiles to flash.
+- `nRF5xTools.deviceFamilyFilters`: Serial number filters for device families.
+- `nRF5xTools.deviceFamilyDefault`: Default device family (`NRF51` or `NRF52`).
+- `nRF5xTools.nrfjprog`: nrfjprog command location.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release of nrfjprog.

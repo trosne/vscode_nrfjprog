@@ -1,48 +1,70 @@
 {
-    "name": "nrfjprog",
-    "displayName": "nrfjprog",
-    "description": "Program and interact with nRF5 devices from VS Code",
+    "name": "nRF5xTools",
+    "displayName": "nRF5x Tools",
+    "description": "Program and interact with Nordic Semiconductor nRF5x devices from VS Code",
     "version": "0.0.1",
-    "publisher": "trosne",
+    "publisher": "trond-snekvik",
     "engines": {
         "vscode": "^1.12.0"
     },
+    "keywords": [
+        "nRF5xTools",
+        "nrfjprog",
+        "nRF51",
+        "nRF52",
+        "nRF5x",
+        "nRF5",
+        "Nordic",
+        "Nordic Semi",
+        "Nordic Semiconductor",
+        "Flash",
+        "Microcontroller"
+    ],
     "categories": [
         "Other"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/trond-snekvik/vscode_nRF5xTools"
+    },
     "activationEvents": [
         "*"
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
-            "command": "nrfjprog.selectDevice",
-            "title": "nRF: Select device"
-        },
+        "commands": [
         {
-            "command": "nrfjprog.program",
+            "command": "nRF5xTools.program",
             "title": "nRF: Program device"
         },
         {
-            "command": "nrfjprog.programMultiple",
+            "command": "nRF5xTools.programMultiple",
             "title": "nRF: Program multiple devices"
         },
         {
-            "command": "nrfjprog.erase",
+            "command": "nRF5xTools.erase",
             "title": "nRF: Erase device flash"
         },
         {
-            "command": "nrfjprog.eraseMultiple",
+            "command": "nRF5xTools.eraseMultiple",
             "title": "nRF: Erase flash of multiple devices"
+        },
+        {
+            "command": "nRF5xTools.reset",
+            "title": "nRF: Reset device"
+        },
+        {
+            "command": "nRF5xTools.resetMultiple",
+            "title": "nRF: Reset multiple devices"
         }],
         "configuration": {
             "properties": {
-                "nrfjprog.hexFolderFilter": {
+                "nRF5xTools.hexFolderFilter": {
                     "title": "nRF: Hexfiles search locations",
                     "default": "**",
                     "type": "string"
                 },
-                "nrfjprog.deviceFamilyFilters": {
+                "nRF5xTools.deviceFamilyFilters": {
                     "title": "nRF: Device family serial number filters.",
                     "type": "object",
     
@@ -52,8 +74,7 @@
                             "enum": [
                                 "NRF51",
                                 "NRF52"
-                            ],
-                            "id": "nrfjprog.deviceFamily"
+                            ]
                         },
                         ".*": {
                             "description": "The serial number must only contain digits.",
@@ -67,7 +88,7 @@
                     },
                     "description": "Will use the value of the longest matching key from the start of the serial number as device family when calling nrfjprog."
                 },
-                "nrfjprog.deviceFamilyDefault": {
+                "nRF5xTools.deviceFamilyDefault": {
                     "title": "nRF: Default device family, in case no family filters match.",
                     "default": "NRF51",
                     "enum": [
@@ -75,6 +96,11 @@
                         "NRF52"
                     ],
                     "type": "string"
+                },
+                "nRF5xTools.nrfjprog": {
+                    "title": "nRF: nrfjprog command",
+                    "default": "nrfjprog",
+                    "type":"string"
                 }
             }
         }
