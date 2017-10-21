@@ -8,17 +8,11 @@
         "vscode": "^1.12.0"
     },
     "keywords": [
-        "nRF5xTools",
         "nrfjprog",
         "nRF51",
         "nRF52",
-        "nRF5x",
-        "nRF5",
         "Nordic",
-        "Nordic Semi",
-        "Nordic Semiconductor",
-        "Flash",
-        "Microcontroller"
+        "Nordic Semiconductor"
     ],
     "categories": [
         "Other"
@@ -67,7 +61,7 @@
                 "nRF5xTools.deviceFamilyFilters": {
                     "title": "nRF: Device family serial number filters.",
                     "type": "object",
-    
+
                     "patternProperties": {
                         "^\\d+$": {
                             "type":"string",
