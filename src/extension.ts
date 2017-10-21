@@ -3,18 +3,11 @@ import * as vscode from 'vscode';
 import * as subprocess from 'child_process';
 
 enum CommandState {
-    UNVERIFIED,
-    OK,
-    PROGRAM_NOT_FOUND,
-    WRONG_VERSION
+    UNVERIFIED = "Extension not active.",
+    OK = "OK",
+    PROGRAM_NOT_FOUND = "Couldn't find nrfjprog.",
+    WRONG_VERSION = "Wrong version of nrfjprog. The plugin requires version 9.0 and up."
 }
-
-const errorStrings = [
-    "Extension not active.",
-    "OK",
-    "Couldn't find nrfjprog.",
-    "Wrong version of nrfjprog. The plugin requires version 9.0 and up."
-]
 
 const deviceFilterOptions = { prompt: 'Apply a device filter', placeHolder: 'e.g. 680...'};
 
@@ -26,7 +19,7 @@ function getDeviceFamily(serialNumber: string): string {
     let fallback = config.get('deviceFamilyDefault') as string;
     let filterSnrs = Object.keys(filters).sort();
     for (var snr of filterSnrs) {
-        if (serialNumber.startsWith(snr)) 
+        if (serialNumber.startsWith(snr))
             return filters[snr];
     }
     return fallback;
@@ -41,13 +34,13 @@ function execute(cmd): Promise<string> {
 
 function nrfjprog(args: string[]): Promise<string> {
     let config = vscode.workspace.getConfiguration('nRF5xTools');
-    let nrfjprog = <string> config.get('command');
-    return execute(nrfjprog + ' ' + args.join(' '))
+    let nrfjprog = <string> config.get('nrfjprog');
+    return execute(`"${nrfjprog}" ${args.join(' ')}`)
 }
 
 function program(hexfile: string, device: string, eraseAll?: boolean): Promise<string> {
     let cmd: string[] = ['--program', hexfile, '-s', device, '-f', getDeviceFamily(device)];
-    if (eraseAll) 
+    if (eraseAll)
         cmd.push('--chiperase');
     else
         cmd.push('--sectorerase');
@@ -72,7 +65,8 @@ function verifyCommandState(): Promise<CommandState> {
         } catch (error) {
                 return Promise.resolve(CommandState.WRONG_VERSION);
         }
-    }, _ => Promise.resolve(CommandState.PROGRAM_NOT_FOUND));
+    },
+    _ => Promise.resolve(CommandState.PROGRAM_NOT_FOUND));
 }
 
 function getDevices(filter?: string): Promise<string[]> {
@@ -107,7 +101,7 @@ class Hexfile implements vscode.QuickPickItem {
         }
         else {
             this.label = filename;
-            this.description = ''; 
+            this.description = '';
         }
         this.fullFilename = filename;
     }
@@ -137,7 +131,7 @@ function programDevice() {
     selectDevice().then(device => {
         if (device) {
             return selectHexfile().then(hexfile => {
-                program(hexfile, device).then(() => { 
+                program(hexfile, device).then(() => {
                     vscode.window.setStatusBarMessage('Device programmed.', 2000);
                 }).catch(reason => {
                     vscode.window.showErrorMessage(reason);
@@ -150,7 +144,7 @@ function programDevice() {
 function eraseDevice() {
     selectDevice().then(device => {
         if (device) {
-            erase(device).then(() => { 
+            erase(device).then(() => {
                 vscode.window.setStatusBarMessage('Device flash erased.', 2000);
             });
         }
@@ -160,7 +154,7 @@ function eraseDevice() {
 function resetDevice() {
     selectDevice().then(device => {
         if (device) {
-            reset(device).then(() => { 
+            reset(device).then(() => {
                 vscode.window.setStatusBarMessage('Device reset.', 2000);
             });
         }
@@ -216,10 +210,10 @@ function resetMultiple() {
 }
 
 function executeIfCommandStateIsOK(command: ()=>void) {
-    if (gCommandState == CommandState.OK) 
+    if (gCommandState == CommandState.OK)
         command();
     else
-        vscode.window.showErrorMessage(errorStrings[gCommandState]);
+        vscode.window.showErrorMessage(gCommandState);
 }
 
 export function activate(context: vscode.ExtensionContext) {
